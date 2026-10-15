@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Expomídia Digital — Conexão que fatura milhões</title>
+  <meta
+    name="description"
+    content="Expomídia Digital. Marketing e vendas com soluções personalizadas para transformar a experiência da sua marca."
+  />
+  <meta name="theme-color" content="#000000" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&family=Zain:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =========================================
+       IDENTIDADE E CONFIGURAÇÕES VISUAIS
+       ========================================= */
+
+    :root {
+      color-scheme: dark;
+
+      --color-background: #000000;
+      --color-next-section: #000000;
+      --color-white: #ffffff;
+      --color-red: #b70002;
+      --color-blue: #091358;
+      --color-wine: #6a0307;
+
+      --font-title: "Zain", sans-serif;
+      --font-body: "Ubuntu", sans-serif;
+
+      --page-margin: clamp(24px, 4.6vw, 80px);
+      --header-top: clamp(24px, 4.5vh, 52px);
+      --header-duration: 320ms;
+      --entrance-duration: 1200ms;
+      --entrance-distance: 110px;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--color-background);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--color-white);
+      background: var(--color-background);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    ::selection {
+      color: white;
+      background: var(--color-wine);
+    }
+
+    /* =========================================
+       HERO E CAMADAS DE FUNDO
+       ========================================= */
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      min-height: 760px;
+      min-height: max(680px, 100svh);
+      background: var(--color-background);
+
+      /* Atualizadas pelo JavaScript. */
+      --title-x: 0px;
+      --subtitle-x: 0px;
+      --copy-opacity: 1;
+      --shade-opacity: 0.25;
+      --header-opacity: 1;
+    }
+
+    .hero__background {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .hero__media {
+      position: absolute;
+      inset: -16px;
+      transform: translate3d(0, 0, 0) scale(1.025);
+    }
+
+    /*
+      Fundo provisório: será coberto pelo vídeo
+      quando um arquivo válido for configurado.
+    */
+    .hero__placeholder {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          ellipse at 76% 30%,
+          rgba(106, 3, 7, 0.30),
+          transparent 51%
+        ),
+        radial-gradient(
+          ellipse at 20% 68%,
+          rgba(9, 19, 88, 0.24),
+          transparent 55%
+        ),
+        linear-gradient(
+          125deg,
+          #050506 8%,
+          #111014 47%,
+          #060607 78%,
+          #000000 100%
+        );
+    }
+
+    .hero__video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity 900ms ease;
+    }
+
+    .hero__video.is-playing {
+      opacity: 1;
+    }
+
+    .hero__shade {
+      position: absolute;
+      inset: 0;
+      background: var(--color-background);
+      opacity: var(--shade-opacity);
+    }
+
+    .hero__gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 38%,
+        rgba(0, 0, 0, 0.12) 58%,
+        var(--color-next-section) 100%
+      );
+    }
+
+    /* =========================================
+       CABEÇALHO
+       A trilha limita o sticky à Hero.
+       ========================================= */
+
+    .hero__header-track {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hero__header {
+      position: sticky;
+      top: 0;
+      padding: var(--header-top) var(--page-margin) 20px;
+      opacity: var(--header-opacity);
+    }
+
+    .hero__nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      opacity: 1;
+      transition: opacity var(--header-duration) ease;
+    }
+
+    .hero__header.is-hidden .hero__nav {
+      opacity: 0;
+    }
+
+    .hero__brand {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      pointer-events: auto;
+    }
+
+    .hero__wordmark {
+      font-family: var(--font-title);
+      font-size: 31px;
+      font-weight: 700;
+      letter-spacing: -1.3px;
+      line-height: 1;
+    }
+
+    .hero__logo {
+      display: block;
+      width: 145px;
+      max-height: 48px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 108px;
+      min-height: 46px;
+      padding: 12px 24px;
+
+      border: 1px solid transparent;
+      border-radius: 2px;
+      background: transparent;
+
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.025em;
+      text-decoration: none;
+      pointer-events: auto;
+
+      transition:
+        border-color 240ms ease,
+        background-color 240ms ease;
+    }
+
+    .contact-link:hover,
+    .contact-link:focus-visible {
+      border-color: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .contact-link:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 5px;
+    }
+
+    .hero__header.is-hidden .hero__brand,
+    .hero__header.is-hidden .contact-link {
+      pointer-events: none;
+    }
+
+    /* Revela o CTA quando recebe foco pelo teclado. */
+    .hero__header:focus-within {
+      opacity: 1;
+    }
+
+    .hero__header:focus-within .hero__nav {
+      opacity: 1;
+    }
+
+    .hero__header:focus-within .contact-link {
+      pointer-events: auto;
+    }
+
+    /* =========================================
+       CONTEÚDO CENTRAL
+       ========================================= */
+
+    .hero__stage {
+      display: grid;
+      place-items: center;
+      min-height: inherit;
+      padding: 150px var(--page-margin) 170px;
+      overflow: clip;
+    }
+
+    .hero__copy {
+      width: 100%;
+      max-width: 1280px;
+      text-align: center;
+    }
+
+    /*
+      Movimento de scroll e animação de entrada
+      ficam em elementos separados.
+    */
+    .hero__title-scroll {
+      opacity: var(--copy-opacity);
+      transform: translate3d(var(--title-x), 0, 0);
+    }
+
+    .hero__title {
+      margin: 0;
+      font-family: var(--font-title);
+      font-size: clamp(64px, 8.8vw, 128px);
+      font-weight: 700;
+      line-height: 0.94;
+      letter-spacing: -0.045em;
+      text-wrap: balance;
+    }
+
+    .hero__title-line {
+      display: block;
+    }
+
+    .hero__subtitle-scroll {
+      margin-top: clamp(26px, 3.5vh, 40px);
+      opacity: var(--copy-opacity);
+      transform: translate3d(var(--subtitle-x), 0, 0);
+    }
+
+    .hero__subtitle {
+      max-width: 600px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: clamp(16px, 1.45vw, 20px);
+      font-weight: 400;
+      line-height: 1.65;
+      text-wrap: balance;
+    }
+
+    .hero.is-ready .hero__title {
+      animation:
+        title-enter var(--entrance-duration)
+        var(--ease-out) both;
+    }
+
+    .hero.is-ready .hero__subtitle {
+      animation:
+        subtitle-enter var(--entrance-duration)
+        var(--ease-out) 120ms both;
+    }
+
+    @keyframes title-enter {
+      from {
+        opacity: 0;
+        transform: translate3d(
+          calc(-1 * var(--entrance-distance)),
+          0,
+          0
+        );
+      }
+
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes subtitle-enter {
+      from {
+        opacity: 0;
+        transform: translate3d(var(--entrance-distance), 0, 0);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    /* Respiro reservado para a próxima etapa. */
+    .section-breath {
+      height: 28svh;
+      min-height: 160px;
+      background: var(--color-next-section);
+    }
+
+    /*
+      Destino temporário do CTA.
+      Substituir pela seção real de contato depois.
+    */
+    .contact-anchor {
+      height: 1px;
+      background: var(--color-next-section);
+    }
+
+    /* =========================================
+       CELULAR E ACESSIBILIDADE
+       ========================================= */
+
+    @media (max-width: 600px) {
+      :root {
+        --entrance-distance: 32px;
+      }
+
+      .hero {
+        min-height: max(580px, 100svh);
+      }
+
+      .hero__stage {
+        padding-top: 140px;
+        padding-bottom: 150px;
+      }
+
+      .hero__title {
+        font-size: clamp(48px, 11.5vw, 68px);
+        line-height: 1;
+        letter-spacing: -0.035em;
+      }
+
+      .hero__subtitle {
+        max-width: 340px;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .hero__wordmark {
+        font-size: 27px;
+      }
+
+      .hero__logo {
+        width: 125px;
+      }
+
+      .contact-link {
+        min-width: 94px;
+        padding-inline: 18px;
+      }
+    }
+
+    @media (hover: none) {
+      .contact-link {
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .hero__title-scroll,
+      .hero__subtitle-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .hero__header,
+      .hero__nav {
+        opacity: 1 !important;
+      }
+
+      .hero__media {
+        transform: none !important;
+      }
+
+      .hero__video {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero__background" aria-hidden="true">
+        <div class="hero__media">
+          <div class="hero__placeholder"></div>
+
+          <video
+            class="hero__video"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            tabindex="-1"
+            disablepictureinpicture
+          ></video>
+        </div>
+
+        <div class="hero__shade"></div>
+        <div class="hero__gradient"></div>
+      </div>
+
+      <div class="hero__header-track">
+        <header class="hero__header">
+          <nav class="hero__nav" aria-label="Navegação principal">
+            <div class="hero__brand" aria-label="Expomídia Digital">
+              <span class="hero__wordmark">expomídia</span>
+            </div>
+
+            <a class="contact-link" href="#contato">contato</a>
+          </nav>
+        </header>
+      </div>
+
+      <div class="hero__stage">
+        <div class="hero__copy">
+          <div class="hero__title-scroll">
+            <h1 class="hero__title" id="hero-title">
+              <span class="hero__title-line">Conexão que</span>
+              <span class="hero__title-line">fatura milhões</span>
+            </h1>
+          </div>
+
+          <div class="hero__subtitle-scroll">
+            <p class="hero__subtitle">
+              Transformando sua empresa e o seu produto
+              em uma experiência de alto padrão
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-breath" aria-hidden="true"></div>
+
+    <!-- A futura seção de contato deve ocupar este lugar. -->
+    <div class="contact-anchor" id="contato"></div>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      /* ======================================
+         ARQUIVOS E PARÂMETROS AJUSTÁVEIS
+         ====================================== */
+
+      const CONFIG = {
+        // Exemplos: "assets/hero-4k.mp4" e "assets/logo.svg".
+        videoDesktop: "",
+        videoMobile: "",
+        videoPoster: "",
+        logo: "",
+
+        contactTarget: "#contato",
+
+        // Distâncias em pixels.
+        mouseMovement: 8,
+        scrollDirectionThreshold: 10,
+        desktopExitDistance: 150,
+        mobileExitDistance: 48,
+
+        // Frações da altura total da Hero.
+        textExitStart: 0.05,
+        textExitEnd: 0.55,
+        backgroundFadeEnd: 0.85,
+
+        // Quanto o vídeo já começa escurecido.
+        initialShade: 0.25
+      };
+
+      const hero = document.querySelector(".hero");
+      const header = document.querySelector(".hero__header");
+      const media = document.querySelector(".hero__media");
+      const video = document.querySelector(".hero__video");
+      const brand = document.querySelector(".hero__brand");
+      const contact = document.querySelector(".contact-link");
+
+      const motionPreference = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+      const finePointer = window.matchMedia(
+        "(hover: hover) and (pointer: fine)"
+      );
+
+      const mobileViewport = window.matchMedia("(max-width: 600px)");
+
+      const cleanupCallbacks = [];
+
+      let reducedMotion = motionPreference.matches;
+      let heroVisible = true;
+      let scrollFrame = 0;
+      let mouseFrame = 0;
+      let lastScrollY = Math.max(0, window.scrollY);
+      let accumulatedScroll = 0;
+      let heroTop = 0;
+      let heroHeight = hero.offsetHeight;
+
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetX = 0;
+      let targetY = 0;
+
+      const clamp = (value, min = 0, max = 1) =>
+        Math.min(max, Math.max(min, value));
+
+      const smoothstep = value =>
+        value * value * (3 - 2 * value);
+
+      function listen(target, event, handler, options) {
+        target.addEventListener(event, handler, options);
+
+        cleanupCallbacks.push(() =>
+          target.removeEventListener(event, handler, options)
+        );
+      }
+
+      /* ======================================
+         LOGO E VÍDEO
+         ====================================== */
+
+      contact.setAttribute("href", CONFIG.contactTarget);
+
+      if (CONFIG.logo) {
+        const logoImage = new Image();
+
+        logoImage.className = "hero__logo";
+        logoImage.alt = "Expomídia Digital";
+
+        logoImage.onload = () => {
+          brand.replaceChildren(logoImage);
+        };
+
+        // Se houver erro, o placeholder tipográfico permanece.
+        logoImage.src = CONFIG.logo;
+      }
+
+      if (CONFIG.videoPoster) {
+        video.poster = CONFIG.videoPoster;
+
+        // Também funciona como fallback no modo de movimento reduzido.
+        const posterImage = new Image();
+
+        posterImage.onload = () => {
+          Object.assign(posterImage.style, {
+            position: "absolute",
+            inset: "0",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover"
+          });
+
+          posterImage.alt = "";
+          media.insertBefore(posterImage, video);
+        };
+
+        posterImage.src = CONFIG.videoPoster;
+      }
+
+      function syncVideoPlayback() {
+        if (
+          !video.getAttribute("src") ||
+          reducedMotion ||
+          !heroVisible ||
+          document.hidden
+        ) {
+          video.pause();
+          return;
+        }
+
+        const playback = video.play();
+
+        if (playback) {
+          playback.catch(() => {
+            video.classList.remove("is-playing");
+          });
+        }
+      }
+
+      function configureVideo() {
+        if (reducedMotion) {
+          video.pause();
+          video.classList.remove("is-playing");
+          return;
+        }
+
+        const source = mobileViewport.matches
+          ? CONFIG.videoMobile || CONFIG.videoDesktop
+          : CONFIG.videoDesktop || CONFIG.videoMobile;
+
+        if (!source) return;
+
+        if (video.getAttribute("src") !== source) {
+          video.classList.remove("is-playing");
+          video.src = source;
+          video.muted = true;
+          video.load();
+        }
+
+        syncVideoPlayback();
+      }
+
+      listen(video, "playing", () => {
+        video.classList.add("is-playing");
+      });
+
+      listen(video, "error", () => {
+        video.classList.remove("is-playing");
+      });
+
+      listen(document, "visibilitychange", syncVideoPlayback);
+
+      /* ======================================
+         SCROLL
+         ====================================== */
+
+      function measureHero() {
+        const rect = hero.getBoundingClientRect();
+
+        heroTop = rect.top + window.scrollY;
+        heroHeight = rect.height;
+
+        requestScrollUpdate();
+      }
+
+      function updateScroll() {
+        scrollFrame = 0;
+
+        const scrollY = Math.max(0, window.scrollY);
+        const delta = scrollY - lastScrollY;
+        lastScrollY = scrollY;
+
+        if (reducedMotion) {
+          header.classList.remove("is-hidden");
+          hero.style.setProperty("--header-opacity", "1");
+          hero.style.setProperty(
+            "--shade-opacity",
+            String(CONFIG.initialShade)
+          );
+          return;
+        }
+
+        if (delta !== 0) {
+          const changedDirection =
+            Math.sign(delta) !== Math.sign(accumulatedScroll);
+
+          accumulatedScroll = changedDirection
+            ? delta
+            : accumulatedScroll + delta;
+
+          if (
+            Math.abs(accumulatedScroll) >=
+            CONFIG.scrollDirectionThreshold
+          ) {
+            // Descendo: aparece. Subindo: desaparece.
+            header.classList.toggle(
+              "is-hidden",
+              accumulatedScroll < 0
+            );
+
+            accumulatedScroll = 0;
+          }
+        }
+
+        const progress = clamp(
+          (scrollY - heroTop) / Math.max(heroHeight, 1)
+        );
+
+        const textProgress = smoothstep(
+          clamp(
+            (progress - CONFIG.textExitStart) /
+            (CONFIG.textExitEnd - CONFIG.textExitStart)
+          )
+        );
+
+        const exitDistance = mobileViewport.matches
+          ? CONFIG.mobileExitDistance
+          : CONFIG.desktopExitDistance;
+
+        const backgroundProgress = smoothstep(
+          clamp(progress / CONFIG.backgroundFadeEnd)
+        );
+
+        const shade =
+          CONFIG.initialShade +
+          (1 - CONFIG.initialShade) * backgroundProgress;
+
+        const headerOpacity =
+          1 - smoothstep(clamp((progress - 0.72) / 0.25));
+
+        hero.style.setProperty(
+          "--title-x",
+          `${-exitDistance * textProgress}px`
+        );
+
+        hero.style.setProperty(
+          "--subtitle-x",
+          `${exitDistance * textProgress}px`
+        );
+
+        hero.style.setProperty(
+          "--copy-opacity",
+          String(1 - textProgress)
+        );
+
+        hero.style.setProperty("--shade-opacity", String(shade));
+
+        hero.style.setProperty(
+          "--header-opacity",
+          String(headerOpacity)
+        );
+
+        // Impede cliques no cabeçalho quando sua seção já saiu.
+        header.inert = progress >= 0.98;
+      }
+
+      function requestScrollUpdate() {
+        if (!scrollFrame) {
+          scrollFrame = requestAnimationFrame(updateScroll);
+        }
+      }
+
+      listen(window, "scroll", requestScrollUpdate, {
+        passive: true
+      });
+
+      listen(window, "resize", measureHero, {
+        passive: true
+      });
+
+      /* ======================================
+         PARALLAX SUTIL DO FUNDO
+         ====================================== */
+
+      function animateMouse() {
+        mouseFrame = 0;
+
+        if (reducedMotion || !heroVisible || document.hidden) {
+          return;
+        }
+
+        mouseX += (targetX - mouseX) * 0.075;
+        mouseY += (targetY - mouseY) * 0.075;
+
+        media.style.transform =
+          `translate3d(${mouseX}px, ${mouseY}px, 0) scale(1.025)`;
+
+        const stillMoving =
+          Math.abs(targetX - mouseX) > 0.015 ||
+          Math.abs(targetY - mouseY) > 0.015;
+
+        if (stillMoving) {
+          mouseFrame = requestAnimationFrame(animateMouse);
+        }
+      }
+
+      function requestMouseUpdate() {
+        if (!mouseFrame) {
+          mouseFrame = requestAnimationFrame(animateMouse);
+        }
+      }
+
+      listen(hero, "pointermove", event => {
+        if (
+          reducedMotion ||
+          !finePointer.matches ||
+          event.pointerType === "touch"
+        ) {
+          return;
+        }
+
+        const rect = hero.getBoundingClientRect();
+
+        const normalizedX =
+          ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+
+        const normalizedY =
+          ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+
+        targetX = normalizedX * CONFIG.mouseMovement;
+        targetY = normalizedY * CONFIG.mouseMovement;
+
+        requestMouseUpdate();
+      }, { passive: true });
+
+      listen(hero, "pointerleave", () => {
+        targetX = 0;
+        targetY = 0;
+        requestMouseUpdate();
+      });
+
+      /* ======================================
+         VISIBILIDADE E PREFERÊNCIAS
+         ====================================== */
+
+      const visibilityObserver = new IntersectionObserver(
+        entries => {
+          heroVisible = entries[0].isIntersecting;
+
+          if (!heroVisible) {
+            cancelAnimationFrame(mouseFrame);
+            mouseFrame = 0;
+            mouseX = mouseY = targetX = targetY = 0;
+            media.style.transform =
+              "translate3d(0, 0, 0) scale(1.025)";
+          }
+
+          syncVideoPlayback();
+        },
+        { threshold: 0 }
+      );
+
+      visibilityObserver.observe(hero);
+
+      const resizeObserver = new ResizeObserver(measureHero);
+      resizeObserver.observe(hero);
+
+      listen(motionPreference, "change", event => {
+        reducedMotion = event.matches;
+
+        if (reducedMotion) {
+          cancelAnimationFrame(mouseFrame);
+          mouseFrame = 0;
+          media.style.transform = "none";
+          header.inert = false;
+        }
+
+        configureVideo();
+        requestScrollUpdate();
+      });
+
+      listen(mobileViewport, "change", () => {
+        configureVideo();
+        measureHero();
+      });
+
+      // Remove listeners e observadores ao sair da página.
+      listen(window, "pagehide", event => {
+        if (event.persisted) return;
+
+        cancelAnimationFrame(scrollFrame);
+        cancelAnimationFrame(mouseFrame);
+        visibilityObserver.disconnect();
+        resizeObserver.disconnect();
+
+        cleanupCallbacks.forEach(cleanup => cleanup());
+      });
+
+      /* ======================================
+         INICIALIZAÇÃO
+         ====================================== */
+
+      measureHero();
+      configureVideo();
+
+      // O conteúdo continua legível mesmo se JavaScript falhar.
+      requestAnimationFrame(() => {
+        hero.classList.add("is-ready");
+      });
+
+      // Recalcula as medidas quando as fontes terminarem de carregar.
+      if (document.fonts) {
+        document.fonts.ready.then(measureHero);
+      }
+    })();
+  </script>
+</body>
+</html>
